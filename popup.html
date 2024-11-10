@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Popup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            width: 300px;
+        }
+        input[type="text"], button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        input[type="date"]{
+            width: 82%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        #profile-container, #login-container {
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="login-container">
+        <h3>Enter your token</h3>
+        <input id="token-input" type="text" placeholder="Enter your token">
+        <button id="submit-token">Submit Token</button>
+        <p id="status"></p>
+    </div>
+
+    <!-- Profile Information -->
+    <div id="profile-container">
+        <h3>UrbanHelper</h3>
+        <input type="date" id="homework-date" />
+        <p id="homework-count">Homeworks today: 0</p>
+        <p id="current-template">Current Template: <span id="template-text">Not set</span></p>
+        <button id="change-template">Change Template</button>
+        <button id="change-token">Clear Token</button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
