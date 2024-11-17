@@ -80,13 +80,18 @@ function addHomework() {
         .then(response => response.json())
         .then(data => {
             console.log("Homework added:", data);
-            fetchHomeworkCount();  // Обновляем количество домашек
+            let dataCount = fetchHomeworkCount(); // Обновляем количество домашек
+
+            // Показываем уведомление об успешном добавлении
+            showNotification(`Homework added successfully! ${dataCount}`);
         })
         .catch(error => {
             console.error("Error adding homework:", error);
+            showNotification("Failed to add homework", 5000);
         });
     });
 }
+
 
 // Функция для получения количества домашек на выбранную дату
 function fetchHomeworkCount() {
@@ -112,6 +117,7 @@ function fetchHomeworkCount() {
             .then(data => {
                 if (data && typeof data.count === "number") {
                     document.getElementById("homework-count").innerText = `Homeworks on ${selectedDate}: ${data.count}`;
+                    return 25;
                 } else {
                     console.error("Unexpected response format:", data);
                 }
@@ -156,6 +162,9 @@ function addCommentButton() {
                     console.log("Template API Response:", data);
                     if (data && data.template) {
                         targetComment.value = data.template || "No template text found";
+                        targetComment.focus();
+                        button.style.marginRight = "200px";
+                        button.style.marginBottom = "15px"
                     } else {
                         console.error("Unexpected response format:", data);
                     }
@@ -165,8 +174,11 @@ function addCommentButton() {
                 });
             });
         });
-
-        targetComment.parentNode.insertBefore(button, targetComment.nextSibling);
+        let divchik = document.createElement("div");
+        divchik.style.width = targetComment.style.width;
+        divchik.id = "button-insert-template";
+        divchik.appendChild(button);
+        targetComment.parentNode.insertBefore(divchik, targetComment.nextSibling);
     }
 }
 
@@ -227,6 +239,27 @@ function makeGitHubLinksClickable() {
 }
 
 
+// Функция для показа всплывающего уведомления
+function showNotification(message, duration = 3000) {
+    const notification = document.createElement("div");
+    notification.className = "custom-notification";
+    notification.innerText = message;
+
+    document.body.appendChild(notification);
+
+    // Плавное появление
+    setTimeout(() => {
+        notification.style.opacity = "1";
+    }, 100);
+
+    // Плавное исчезновение
+    setTimeout(() => {
+        notification.style.opacity = "0";
+        setTimeout(() => {
+            notification.remove();
+        }, 500); // Время для завершения анимации
+    }, duration);
+}
 
 
 // Функция для добавления слушателей к строкам таблицы
@@ -279,11 +312,12 @@ function waitForElement(selector, callback, interval = 100, timeout = 5000) {
 }
 
 // Добавление стилей для кнопок
+// Добавление стилей для кнопок и уведомления
 function addButtonStyles() {
     const style = document.createElement("style");
     style.innerHTML = `
-        #homework-add-button, #comment-add-button, #github-button{
-            background-color: #4CAF50;  /* Зеленый цвет */
+        #homework-add-button, #comment-add-button, #github-button {
+            background-color: #4CAF50;
             color: white;
             font-size: 16px;
             padding: 12px 20px;
@@ -295,20 +329,21 @@ function addButtonStyles() {
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
         }
 
-        #comment-add-button{
-            margin-top: 10px;
+        #button-insert-template {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: end;
         }
 
         #homework-add-button:hover, #comment-add-button:hover, #github-button:hover {
-            background-color: #45a049; /* Темно-зеленый при наведении */
-            transform: translateY(-2px); /* Легкий эффект подъема */
+            background-color: #45a049;
+            transform: translateY(-2px);
         }
 
         #homework-add-button:active, #comment-add-button:active {
-            background-color: #3e8e41; /* Еще темнее при нажатии */
+            background-color: #3e8e41;
             transform: translateY(0);
         }
 
@@ -320,13 +355,24 @@ function addButtonStyles() {
             font-weight: normal;
         }
 
-        #homework-add-button:focus, #comment-add-button:focus, , #github-button:focus {
-            outline: none;
-            box-shadow: 0 0 4px rgba(76, 175, 80, 0.6); /* Зеленая подсветка фокуса */
+        .custom-notification {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background-color: #323232;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 1000;
         }
     `;
     document.head.appendChild(style);
 }
+
 
 // Вызов функции для добавления стилей
 addButtonStyles();
