@@ -1,5 +1,13 @@
 // Функция для добавления кнопки "Add Homework"
 function addButton() {
+        // Находим все кнопки с указанным классом
+    const buttons = document.querySelectorAll('.tlk-btn.tlk-btn_pd30.tlk-btn_accent.tlk-btn_reset');
+
+    // Назначаем обработчик события для каждой кнопки
+    buttons.forEach(button => {
+        button.addEventListener('click', addHomework);
+    });
+
     const targetElement = document.querySelector(".tlk-homework__mark-button");
 
     if (targetElement && !document.querySelector("#homework-add-button")) {
@@ -26,14 +34,14 @@ function addButton() {
             fetchHomeworkCount(); // Обновляем количество домашек
         });
 
-        // Кнопка добавления домашки
-        const addButton = document.createElement("button");
-        addButton.id = "homework-add-button";
-        addButton.innerText = "Add Homework";
-        addButton.style.padding = "10px";
-        addButton.style.fontSize = "16px";
-        addButton.style.marginLeft = "10px";
-        addButton.type = "button";
+        // // Кнопка добавления домашки
+        // const addButton = document.createElement("button");
+        // addButton.id = "homework-add-button";
+        // addButton.innerText = "Add Homework";
+        // addButton.style.padding = "10px";
+        // addButton.style.fontSize = "16px";
+        // addButton.style.marginLeft = "10px";
+        // addButton.type = "button";
 
         // Лейбл для количества домашек
         const countLabel = document.createElement("span");
@@ -43,11 +51,11 @@ function addButton() {
 
         // Добавляем элементы в DOM
         targetElement.parentNode.insertBefore(dateInput, targetElement.nextSibling);
-        targetElement.parentNode.insertBefore(addButton, dateInput.nextSibling);
+        // targetElement.parentNode.insertBefore(addButton, dateInput.nextSibling);
         targetElement.parentNode.insertBefore(countLabel, addButton.nextSibling);
 
         // Обработчик на кнопку добавления домашки
-        addButton.addEventListener("click", addHomework);
+        // addButton.addEventListener("click", addHomework);
         fetchHomeworkCount();  // Fetch and display the homework count on page load
     }
 }
